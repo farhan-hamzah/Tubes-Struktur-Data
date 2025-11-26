@@ -68,10 +68,15 @@ void hapusNegara(ListInduk &l, string namaNegara); // Wrapper function
 void deleteFirstProvinsi(ListInduk &LI, string namaNegara, addressAnak &p);
 void deleteLastProvinsi(ListInduk &LI, string namaNegara, addressAnak &p);
 void deleteAfterProvinsi(ListInduk &LI, addressAnak prec, addressAnak &p); // Tipe data diperbaiki jadi addressAnak
+void hapusProvinsi(ListAnak &LI, ListInduk &LA, string namaNegara);
 
-
-addressInduk maxPopulasiNegara(ListInduk l);
-addressInduk minPopulasiNegara(ListInduk l);
+//MinMax
+addressInduk maxNegara(ListInduk l);
+addressInduk minNegara(ListInduk l);
+addressAnak minProvinsi(ListInduk LI, string x);
+addressAnak maxProvinsi(ListInduk LI, string x);
+void MaxMinNegara(ListInduk l);
+void MaxMinProvinsi(ListInduk l);
 
 void printAll(ListInduk l);
 
