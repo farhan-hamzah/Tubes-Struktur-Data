@@ -1,6 +1,7 @@
 #ifndef HEADER_H_INCLUDED
 #define HEADER_H_INCLUDED
 #include <iostream>
+#include <iomanip> // Tambahkan ini untuk setw() di print
 using namespace std;
 
 // --- DEFINISI STRUKTUR DATA ---
@@ -10,7 +11,7 @@ struct infotypeAnak {
 };
 
 struct infotypeInduk {
-    string namaNegara, kodeNegara, benua, mataUang, presiden;
+    string namaNegara, kodeNegara, benua, mataUang, presiden, ibuKotaNegara;
     int totalPopulasi;
 };
 
@@ -40,10 +41,10 @@ struct ListAnak {
     addressAnak last;
 };
 
-
 // Umum
 bool isEmpty(ListInduk l);
 void createList(ListInduk &l);
+void createListAnak(ListAnak &l); // Opsional, tapi dibiarkan jika diminta
 
 // Alokasi
 addressInduk alokasiNegara(infotypeInduk x);
@@ -51,34 +52,48 @@ addressAnak alokasiProvinsi(infotypeAnak x);
 
 // Insert Induk (Negara)
 void insertLastNegara(ListInduk &l, addressInduk p);
-// Insert Anak (Provinsi) -> Butuh tahu mau dimasukkan ke Negara mana (string namaNegara)
+// Insert Anak (Provinsi)
 void insertLastProvinsi(ListInduk &LI, string namaNegara, addressAnak p);
 
 // Searching
-addressInduk searchNegara(ListInduk l, string namaNegara); // Search by nama lebih umum
+addressInduk searchNegara(ListInduk l, string namaNegara);
 addressAnak searchProvinsi(ListInduk l, string namaNegara, string namaProvinsi);
 
 // Delete Induk (Negara)
-void deleteFirstNegara(ListInduk &l, addressInduk &p); // Pakai &p agar pointer di main jadi NULL
-void deleteLastNegara(ListInduk &l, addressInduk &p);
+void deleteFirstNegara(ListInduk &l, addressInduk p);
+void deleteLastNegara(ListInduk &l, addressInduk p);
 void deleteAfterNegara(ListInduk &l, addressInduk prec, addressInduk &p);
-void hapusNegara(ListInduk &l, string namaNegara); // Wrapper function
+void hapusNegara(ListInduk &l, string namaNegara);
 
 // Delete Anak (Provinsi)
 void deleteFirstProvinsi(ListInduk &LI, string namaNegara, addressAnak &p);
 void deleteLastProvinsi(ListInduk &LI, string namaNegara, addressAnak &p);
-void deleteAfterProvinsi(ListInduk &LI, addressAnak prec, addressAnak &p); // Tipe data diperbaiki jadi addressAnak
-void hapusProvinsi(ListAnak &LI, ListInduk &LA, string namaNegara);
+void deleteAfterProvinsi(ListInduk &LI, addressAnak prec, addressAnak &p);
+void hapusProvinsi(ListInduk &LI, string namaNegara, string namaProvinsi);
 
-//MinMax
+// MinMax & Analisis
 addressInduk maxNegara(ListInduk l);
 addressInduk minNegara(ListInduk l);
-addressAnak minProvinsi(ListInduk LI, string x);
-addressAnak maxProvinsi(ListInduk LI, string x);
+addressAnak minProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
+addressAnak maxProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 void MaxMinNegara(ListInduk l);
-void MaxMinProvinsi(ListInduk l);
+void MaxMinProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 
+//Hitung banyak negara & Provinsi
+int countNegara(ListInduk l);
+int countProvinsi(addressInduk p);
+
+
+//Update
+void updatePopulasiOtomatis(ListInduk &l);
+
+//Sort
+void sortingNegaraAscending(ListInduk &l);
+void sortingProvinsiDescending(addressInduk &p);
+
+// Display
+void printDetailNegara(addressInduk p);
+void printDetailProvinsi(addressAnak p);
 void printAll(ListInduk l);
-
 
 #endif // HEADER_H_INCLUDED
