@@ -77,7 +77,7 @@ addressInduk minNegara(ListInduk l);
 addressAnak minProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 addressAnak maxProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 void MaxMinNegara(ListInduk l);
-void MaxMinProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
+void MaxMinProvinsi(string negara, ListInduk l); // Tambah parameter ListInduk
 
 //Hitung banyak negara & Provinsi
 int countNegara(ListInduk l);
@@ -89,11 +89,19 @@ void updatePopulasiOtomatis(ListInduk &l);
 
 //Sort
 void sortingNegaraAscending(ListInduk &l);
-void sortingProvinsiDescending(addressInduk &p);
+void sortingProvinsiDescending(addressInduk p);
 
 // Display
 void printDetailNegara(addressInduk p);
 void printDetailProvinsi(addressAnak p);
 void printAll(ListInduk l);
 
+
+// FITUR BARU (UPDATE MANUAL & TOTAL)
+void updateDataNegara(ListInduk &l, string namaNegara);
+void updateDataProvinsi(ListInduk &l, string namaNegara, string namaProvinsi);
+void printTotalData(ListInduk l); // Untuk fitur Total Album/Lagu versi kamu
+
+void showDashboard(ListInduk l);
 #endif // HEADER_H_INCLUDED
+

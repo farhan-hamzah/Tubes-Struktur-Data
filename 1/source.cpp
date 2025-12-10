@@ -36,6 +36,7 @@ addressAnak alokasiProvinsi(infotypeAnak x){
 
 //Insert List
 void insertLastNegara(ListInduk &l, addressInduk p){
+    //
     if(isEmpty(l)){
         l.first = p;
         l.last = p;
@@ -49,6 +50,7 @@ void insertLastNegara(ListInduk &l, addressInduk p){
         p->next = nullptr;
     }
 }
+
 void insertLastProvinsi(ListInduk &LI, string x, addressAnak p) {
     addressInduk q = LI.first;
     bool ketemu = false;
@@ -556,4 +558,52 @@ void printAll(ListInduk l) {
         p = p->next; // Lanjut ke negara berikutnya
     }
     cout << "\n========================================\n" << endl;
+}
+
+
+void showDashboard(ListInduk l) {
+    // Bersihkan layar (Windows)
+    system("cls");
+
+    int totalNegara = countNegara(l);
+
+    cout << "================================================================" << endl;
+    cout << "           APLIKASI PENCATATAN DATA NEGARA & PROVINSI           " << endl;
+    cout << "================================================================" << endl;
+    cout << "  [ STATISTIK DATA SAAT INI ]" << endl;
+    cout << "  > Jumlah Negara Terdaftar : " << totalNegara << endl;
+    cout << "  > Status Database         : " << (isEmpty(l) ? "KOSONG" : "TERISI") << endl;
+    cout << "================================================================" << endl;
+    cout << "  [ MENU UTAMA ]" << endl;
+    cout << "  1.  Tambah Negara Baru" << endl;
+    cout << "  2.  Tambah Provinsi ke Negara" << endl;
+    cout << "  3.  Hapus Negara" << endl;
+    cout << "  4.  Hapus Provinsi" << endl;
+    cout << "  5.  Cari Data Negara (Detail)" << endl;
+    cout << "  6.  Cari Data Provinsi (Detail)" << endl;
+    cout << "  7.  Tampilkan Seluruh Data (View All)" << endl;
+    cout << "  8.  Update Otomatis Populasi Negara (Sum dari Provinsi)" << endl;
+    cout << "  9.  Tampilkan Negara Terpadat & Tersepi (Max/Min)" << endl;
+    cout << "  10. Tampilkan Provinsi Terpadat & Tersepi di suatu Negara" << endl;
+    cout << "  11. Sorting Negara (Ascending - Populasi)" << endl;
+    cout << "  12. Sorting Provinsi (Descending - Populasi)" << endl;
+    cout << "----------------------------------------------------------------" << endl;
+    cout << "  0.  KELUAR" << endl;
+    cout << "================================================================" << endl;
+    cout << "  Pilihan Anda [0-12] : ";
+}
+void printTotalData(ListInduk l) {
+    int jumNegara = countNegara(l);
+    int jumProvinsi = 0;
+
+    addressInduk p = l.first;
+    while(p != nullptr) {
+        jumProvinsi += countProvinsi(p);
+        p = p->next;
+    }
+
+    cout << "\n=== LAPORAN TOTAL DATA ===" << endl;
+    cout << "Total Negara   : " << jumNegara << endl;
+    cout << "Total Provinsi : " << jumProvinsi << endl;
+    cout << "==========================" << endl;
 }
