@@ -371,7 +371,7 @@ void hapusProvinsi(ListInduk &LI, string namaNegara, string namaProvinsi) {
 int countNegara(ListInduk l){
     addressInduk p;
     p = l.first;
-    int i;
+    int i = 0;
     if(isEmpty(l)){
         return 0;
     }
@@ -387,7 +387,7 @@ int countProvinsi(addressInduk p){
     if(p->child == nullptr){
         return 0;
     }else{
-        int i;
+        int i = 0;
         while(q != nullptr){
             q = q->next;
             i =+1;
@@ -562,8 +562,6 @@ void printAll(ListInduk l) {
 
 
 void showDashboard(ListInduk l) {
-    // Bersihkan layar (Windows)
-    system("cls");
 
     int totalNegara = countNegara(l);
 
