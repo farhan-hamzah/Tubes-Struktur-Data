@@ -1,109 +1,149 @@
-#include"header.h"
-//Mengecek apakah List Kosong
-bool isEmpty(ListInduk l){
-    if(l.first == nullptr){
+#include "header.h"
+// Mengecek apakah List Kosong
+bool isEmpty(ListInduk l)
+{
+    if (l.first == nullptr)
+    {
         return true;
-    }else{
+    }
+    else
+    {
         return false;
     }
 }
 
-
-//Membuat List
-void createList(ListInduk &l){
+// Membuat List
+void createList(ListInduk &l)
+{
     l.first = nullptr;
     l.last = nullptr;
 }
-void createListAnak(ListAnak &l){
+void createListAnak(ListAnak &l)
+{
     l.first = nullptr;
 }
 
-
-//Alokasi List
-addressInduk alokasiNegara(infotypeInduk x){
+// Alokasi List
+addressInduk alokasiNegara(infotypeInduk x)
+{
     addressInduk p;
     p = new elmlistInduk;
     p->info = x;
     return p;
 }
-addressAnak alokasiProvinsi(infotypeAnak x){
+addressAnak alokasiProvinsi(infotypeAnak x)
+{
     addressAnak p;
     p = new elmlistAnak;
     p->info = x;
     return p;
 }
 
+// Insert List
+void insertLastNegara(ListInduk &l, addressInduk p)
+{
+    if (searchNegara(l, p->info.namaNegara) != nullptr)
+    {
+        cout << "[!] Gagal: Negara dengan nama '" << p->info.namaNegara << "' sudah ada dalam daftar." << endl;
+        delete p; // Dealokasi p karena tidak jadi dimasukkan
+        return;
+    }
 
-//Insert List
-void insertLastNegara(ListInduk &l, addressInduk p){
-    //
-    if(isEmpty(l)){
+    if (isEmpty(l))
+    {
         l.first = p;
         l.last = p;
         p->next = nullptr;
         p->prev = nullptr;
         p->child = nullptr;
-    }else{
+    }
+    else
+    {
         p->prev = l.last;
         l.last->next = p;
         l.last = p;
         p->next = nullptr;
+        p->child = nullptr; // Pastikan child diinisialisasi null
     }
 }
 
-void insertLastProvinsi(ListInduk &LI, string x, addressAnak p) {
-    addressInduk q = LI.first;
-    bool ketemu = false;
-    while (q != nullptr && ketemu == false) {
-        if (q->info.namaNegara == x) {
-            ketemu = true;
-        }else{
-            q = q->next;
+void insertLastProvinsi(ListInduk &LI, string x, addressAnak p)
+{
+    addressInduk q = searchNegara(LI, x);
+
+    if (q != nullptr)
+    {
+        if (searchProvinsi(LI, x, p->info.namaProvinsi) != nullptr)
+        {
+            cout << "[!] Gagal: Provinsi '" << p->info.namaProvinsi << "' sudah terdaftar di negara " << x << "." << endl;
+            delete p; // Dealokasi p karena tidak jadi dimasukkan
+            return;
         }
-    }
-    if (ketemu) {
-        if (q->child == nullptr) {
+
+        if (q->child == nullptr)
+        {
             q->child = p;
-        } else {
+            p->next = nullptr;
+            p->prev = nullptr;
+        }
+        else
+        {
             addressAnak lastAnak = q->child;
-            while (lastAnak->next != nullptr) {
+            while (lastAnak->next != nullptr)
+            {
                 lastAnak = lastAnak->next;
             }
             lastAnak->next = p;
             p->prev = lastAnak;
+            p->next = nullptr;
         }
-    } else {
-        cout << "Negara tidak ditemukan" << endl;
+    }
+    else
+    {
+        cout << "[!] Gagal: Negara '" << x << "' tidak ditemukan." << endl;
+        delete p;
     }
 }
 
-//Searching
-addressInduk searchNegara(ListInduk l, string negara){
+// Searching
+addressInduk searchNegara(ListInduk l, string negara)
+{
     addressInduk p;
     p = l.first;
-    if(isEmpty(l)){
+    if (isEmpty(l))
+    {
         return nullptr;
-    }else{
+    }
+    else
+    {
         bool cek = false;
-        while(p!= nullptr && cek == false){
-            if(p->info.namaNegara == negara){
+        while (p != nullptr && cek == false)
+        {
+            if (p->info.namaNegara == negara)
+            {
                 return p;
                 cek = false;
-            }else{
+            }
+            else
+            {
                 p = p->next;
             }
         }
     }
     return p;
 }
-addressAnak searchProvinsi(ListInduk l, string namaNegara, string namaProvinsi) {
+addressAnak searchProvinsi(ListInduk l, string namaNegara, string namaProvinsi)
+{
     addressInduk p = searchNegara(l, namaNegara);
-    if (p == nullptr) {
+    if (p == nullptr)
+    {
         return nullptr;
     }
     addressAnak q = p->child;
-    while (q != nullptr) {
-        if (q->info.namaProvinsi == namaProvinsi) {
+    while (q != nullptr)
+    {
+        if (q->info.namaProvinsi == namaProvinsi)
+        {
             return q;
         }
         q = q->next;
@@ -112,17 +152,23 @@ addressAnak searchProvinsi(ListInduk l, string namaNegara, string namaProvinsi) 
     return nullptr;
 }
 
-//Mencari nilai max dan min
-addressInduk maxNegara(ListInduk l) {
-    if (isEmpty(l)) {
+// Mencari nilai max dan min
+addressInduk maxNegara(ListInduk l)
+{
+    if (isEmpty(l))
+    {
         return nullptr;
-    } else {
+    }
+    else
+    {
         addressInduk p = l.first;
         addressInduk maxNode = l.first;
         int maxVal = p->info.totalPopulasi;
 
-        while (p != nullptr) {
-            if (p->info.totalPopulasi > maxVal) {
+        while (p != nullptr)
+        {
+            if (p->info.totalPopulasi > maxVal)
+            {
                 maxVal = p->info.totalPopulasi;
                 maxNode = p;
             }
@@ -131,16 +177,22 @@ addressInduk maxNegara(ListInduk l) {
         return maxNode;
     }
 }
-addressInduk minNegara(ListInduk l) {
-    if (isEmpty(l)) {
+addressInduk minNegara(ListInduk l)
+{
+    if (isEmpty(l))
+    {
         return nullptr;
-    } else {
+    }
+    else
+    {
         addressInduk p = l.first;
         addressInduk minNode = l.first;
         int minVal = p->info.totalPopulasi;
 
-        while (p != nullptr) {
-            if (p->info.totalPopulasi < minVal) {
+        while (p != nullptr)
+        {
+            if (p->info.totalPopulasi < minVal)
+            {
                 minVal = p->info.totalPopulasi;
                 minNode = p;
             }
@@ -150,18 +202,23 @@ addressInduk minNegara(ListInduk l) {
     }
 }
 
-
-addressAnak minProvinsi(ListInduk l, string negara) {
+addressAnak minProvinsi(ListInduk l, string negara)
+{
     addressInduk p = searchNegara(l, negara);
-    if (p == nullptr || p->child == nullptr) {
+    if (p == nullptr || p->child == nullptr)
+    {
         return nullptr;
-    } else {
+    }
+    else
+    {
         addressAnak q = p->child;
         addressAnak minNode = q;
         int minVal = q->info.populasiProvinsi;
 
-        while (q != nullptr) {
-            if (q->info.populasiProvinsi < minVal) {
+        while (q != nullptr)
+        {
+            if (q->info.populasiProvinsi < minVal)
+            {
                 minVal = q->info.populasiProvinsi;
                 minNode = q;
             }
@@ -171,17 +228,23 @@ addressAnak minProvinsi(ListInduk l, string negara) {
     }
 }
 
-addressAnak maxProvinsi(ListInduk l, string negara) {
+addressAnak maxProvinsi(ListInduk l, string negara)
+{
     addressInduk p = searchNegara(l, negara);
-    if (p == nullptr || p->child == nullptr) {
+    if (p == nullptr || p->child == nullptr)
+    {
         return nullptr;
-    } else {
+    }
+    else
+    {
         addressAnak q = p->child;
         addressAnak maxNode = q;
         int maxVal = q->info.populasiProvinsi;
 
-        while (q != nullptr) {
-            if (q->info.populasiProvinsi > maxVal) {
+        while (q != nullptr)
+        {
+            if (q->info.populasiProvinsi > maxVal)
+            {
                 maxVal = q->info.populasiProvinsi;
                 maxNode = q;
             }
@@ -191,24 +254,30 @@ addressAnak maxProvinsi(ListInduk l, string negara) {
     }
 }
 
-void MaxMinNegara(ListInduk l){
+void MaxMinNegara(ListInduk l)
+{
     addressInduk maxN, minN;
     maxN = maxNegara(l);
     minN = minNegara(l);
-    if(!isEmpty(l)){
-        cout << "Total populasi terbesar adalah negara: "<<maxN->info.namaNegara << "Dengan detail negara";
+    if (!isEmpty(l))
+    {
+        cout << "Total populasi terbesar adalah negara: " << maxN->info.namaNegara << "Dengan detail negara";
         printDetailNegara(maxN);
         cout << endl;
-        cout << "Total populasi terkecil adalah negara: "<<minN->info.namaNegara << "Dengan detail negara";
+        cout << "Total populasi terkecil adalah negara: " << minN->info.namaNegara << "Dengan detail negara";
         printDetailNegara(minN);
-    }else{
+    }
+    else
+    {
         cout << "List kosong";
     }
 }
-void MaxMinProvinsi(string negara, ListInduk l){
+void MaxMinProvinsi(string negara, ListInduk l)
+{
     addressInduk p;
     p = searchNegara(l, negara);
-    if(p != nullptr){
+    if (p != nullptr)
+    {
         addressAnak maxP, minP;
         maxP = maxProvinsi(l, negara);
         minP = minProvinsi(l, negara);
@@ -216,77 +285,107 @@ void MaxMinProvinsi(string negara, ListInduk l){
         printDetailProvinsi(maxP);
         cout << "Populasi paling sedikit dari negara: " << negara << "adalah provinsi: " << minP->info.namaProvinsi << "dengan detail provinsi";
         printDetailProvinsi(minP);
-    }else{
+    }
+    else
+    {
         cout << "Negara tidak ditemukan";
     }
 }
 
-//Hapus Negara
-void deleteFirstNegara(ListInduk &l, addressInduk p){
-    if(isEmpty(l)){
+// Hapus Negara
+void deleteFirstNegara(ListInduk &l, addressInduk p)
+{
+    if (isEmpty(l))
+    {
         cout << "List kosong";
-    }else if(l.first->next == nullptr){
+    }
+    else if (l.first->next == nullptr)
+    {
         l.first = nullptr;
-    }else{
+    }
+    else
+    {
         p = l.first;
         l.first = p->next;
         p->next = nullptr;
     }
 }
-void deleteLastNegara(ListInduk &l, addressInduk p){
-    if(isEmpty(l)){
+void deleteLastNegara(ListInduk &l, addressInduk p)
+{
+    if (isEmpty(l))
+    {
         cout << "List kosong";
-    }else{
-p = l.last;
-    l.last = l.last->prev;
-    l.last->next = nullptr;
-    p->prev = nullptr;
+    }
+    else
+    {
+        p = l.last;
+        l.last = l.last->prev;
+        l.last->next = nullptr;
+        p->prev = nullptr;
     }
 }
-void deleteAfterNegara(ListInduk &l, addressInduk prec, addressInduk &p) {
+void deleteAfterNegara(ListInduk &l, addressInduk prec, addressInduk &p)
+{
     p = prec->next;
     prec->next = p->next;
-    if (p->next != nullptr) {
+    if (p->next != nullptr)
+    {
         p->next->prev = prec;
-    } else {
+    }
+    else
+    {
         l.last = prec;
     }
     p->next = nullptr;
     p->prev = nullptr;
 }
 
-void hapusNegara(ListInduk &l, string namaNegara){
+void hapusNegara(ListInduk &l, string namaNegara)
+{
     addressInduk p;
     p = searchNegara(l, namaNegara);
-    if(p!= nullptr){
-        if(p == l.first){
+    if (p != nullptr)
+    {
+        if (p == l.first)
+        {
             deleteFirstNegara(l, p);
-        }else if(p == l.last){
+        }
+        else if (p == l.last)
+        {
             deleteLastNegara(l, p);
-        }else{
+        }
+        else
+        {
             deleteAfterNegara(l, p->prev, p);
         }
-    }else{
+    }
+    else
+    {
         cout << "Negara Tidak Ditemukan";
     }
 }
 
-
-void deleteFirstProvinsi(ListInduk &LI, string namaNegara, addressAnak &p) {
+void deleteFirstProvinsi(ListInduk &LI, string namaNegara, addressAnak &p)
+{
     addressInduk negara = searchNegara(LI, namaNegara);
-    if (negara == nullptr) {
+    if (negara == nullptr)
+    {
         cout << "Negara tidak ditemukan." << endl;
         p = nullptr;
         return;
     }
-    if (negara->child == nullptr) {
+    if (negara->child == nullptr)
+    {
         cout << "Tidak ada provinsi di negara ini." << endl;
         p = nullptr;
-    } else {
+    }
+    else
+    {
         p = negara->child;
         negara->child = p->next;
 
-        if (negara->child != nullptr) {
+        if (negara->child != nullptr)
+        {
             negara->child->prev = nullptr;
         }
 
@@ -295,25 +394,33 @@ void deleteFirstProvinsi(ListInduk &LI, string namaNegara, addressAnak &p) {
     }
 }
 
-void deleteLastProvinsi(ListInduk &LI, string namaNegara, addressAnak &p) {
+void deleteLastProvinsi(ListInduk &LI, string namaNegara, addressAnak &p)
+{
     addressInduk negara = searchNegara(LI, namaNegara);
 
-    if (negara == nullptr) {
+    if (negara == nullptr)
+    {
         cout << "Negara tidak ditemukan." << endl;
         p = nullptr;
         return;
     }
 
-    if (negara->child == nullptr) {
+    if (negara->child == nullptr)
+    {
         cout << "Tidak ada provinsi." << endl;
         p = nullptr;
-    } else {
+    }
+    else
+    {
         addressAnak q = negara->child;
-        if (q->next == nullptr) {
+        if (q->next == nullptr)
+        {
             deleteFirstProvinsi(LI, namaNegara, p);
         }
-        else {
-            while (q->next != nullptr) {
+        else
+        {
+            while (q->next != nullptr)
+            {
                 q = q->next;
             }
             p = q;
@@ -323,15 +430,20 @@ void deleteLastProvinsi(ListInduk &LI, string namaNegara, addressAnak &p) {
     }
 }
 
-void deleteAfterProvinsi(ListInduk &LI, addressAnak prec, addressAnak &p) {
-    if (prec == nullptr || prec->next == nullptr) {
+void deleteAfterProvinsi(ListInduk &LI, addressAnak prec, addressAnak &p)
+{
+    if (prec == nullptr || prec->next == nullptr)
+    {
         cout << "Gagal hapus after (prec null atau tidak ada elemen setelahnya)." << endl;
         p = nullptr;
-    } else {
+    }
+    else
+    {
         p = prec->next;
         prec->next = p->next;
 
-        if (p->next != nullptr) {
+        if (p->next != nullptr)
+        {
             p->next->prev = prec;
         }
 
@@ -340,128 +452,146 @@ void deleteAfterProvinsi(ListInduk &LI, addressAnak prec, addressAnak &p) {
     }
 }
 
-
-void hapusProvinsi(ListInduk &LI, string namaNegara, string namaProvinsi) {
+void hapusProvinsi(ListInduk &LI, string namaNegara, string namaProvinsi)
+{
     addressInduk negara = searchNegara(LI, namaNegara);
 
-    if (negara != nullptr) {
+    if (negara != nullptr)
+    {
         addressAnak p = searchProvinsi(LI, namaNegara, namaProvinsi);
 
-        if (p != nullptr) {
+        if (p != nullptr)
+        {
             addressAnak temp;
 
-            if (p == negara->child) {
+            if (p == negara->child)
+            {
                 deleteFirstProvinsi(LI, namaNegara, temp);
-            } else if (p->next == nullptr) {
+            }
+            else if (p->next == nullptr)
+            {
                 deleteLastProvinsi(LI, namaNegara, temp);
-            } else {
+            }
+            else
+            {
                 deleteAfterProvinsi(LI, p->prev, temp);
             }
             cout << "Provinsi " << namaProvinsi << " berhasil dihapus." << endl;
-        } else {
+        }
+        else
+        {
             cout << "Provinsi tidak ditemukan." << endl;
         }
-    } else {
+    }
+    else
+    {
         cout << "Negara tidak ditemukan." << endl;
     }
 }
 
-
-//Menghitung ada berapa negara dan provinsi
-int countNegara(ListInduk l){
+// Menghitung ada berapa negara dan provinsi
+int countNegara(ListInduk l)
+{
     addressInduk p;
     p = l.first;
     int i = 0;
-    if(isEmpty(l)){
+    if (isEmpty(l))
+    {
         return 0;
     }
-    while(p!= nullptr){
+    while (p != nullptr)
+    {
         p = p->next;
-        i+=1;
+        i += 1;
     }
     return i;
 }
-int countProvinsi(addressInduk p){
-    addressAnak q;
-    p->child = q;
-    if(p->child == nullptr){
+int countProvinsi(addressInduk p)
+{
+    if (p == nullptr || p->child == nullptr)
+    {
         return 0;
-    }else{
+    }
+    else
+    {
         int i = 0;
-        while(q != nullptr){
+        addressAnak q = p->child;
+        while (q != nullptr)
+        {
+            i++;
             q = q->next;
-            i =+1;
         }
         return i;
     }
 }
 
-//Update Populasi otomatis
-void updatePopulasiOtomatis(ListInduk &l) {
+void updatePopulasiOtomatis(ListInduk &l)
+{
     addressInduk p = l.first;
-
-    while (p != nullptr) {
+    while (p != nullptr)
+    {
         int total = 0;
         addressAnak q = p->child;
-        while (q != nullptr) {
-            total = total + q->info.populasiProvinsi;
+        while (q != nullptr)
+        {
+            total += q->info.populasiProvinsi;
             q = q->next;
         }
         p->info.totalPopulasi = total;
         p = p->next;
     }
-    cout << "Data populasi seluruh negara berhasil diperbarui berdasarkan data provinsi!" << endl;
 }
 
-//Sorting
-void sortingNegaraAscending(ListInduk &l){
-    addressInduk p;
-    if(isEmpty(l)){
-        cout << "List kosong tidak ada yang bisa diurutkan";
-    }else{
-        addressInduk temp;
-        addressInduk pindah;
-        addressInduk q;
-        addressInduk p;
-        int kecil;
-        p = l.first;
-        while(p != nullptr){
-            kecil = temp->info.totalPopulasi;
-            pindah = p->next;
-            temp = p;
-            while(pindah != nullptr){
-                if(kecil < pindah->info.totalPopulasi){
-                    kecil = pindah->info.totalPopulasi;
-                    temp = pindah;
-                }
-                pindah = pindah->next;
-            }
-            if (temp != p) {
-                //Tukar negara
-                infotypeInduk dataSementara = p->info;
-                p->info = temp->info;
-                temp->info = dataSementara;
-
-                //Tukar provinsi
-                addressAnak anakSementara = p->child;
-                p->child = temp->child;
-                temp->child = anakSementara;
-            }
-            p =p->next;
-        }
-        cout << "Sorting Negara selesai" << endl;
-        printAll(l);
+// Sorting
+void sortingNegaraAscending(ListInduk &l)
+{
+    if (isEmpty(l))
+    {
+        cout << "List kosong, tidak ada yang bisa diurutkan." << endl;
+        return;
     }
+
+    addressInduk p = l.first;
+    while (p != nullptr)
+    {
+        addressInduk minNode = p;
+        addressInduk q = p->next;
+
+        while (q != nullptr)
+        {
+            if (q->info.totalPopulasi < minNode->info.totalPopulasi)
+            {
+                minNode = q;
+            }
+            q = q->next;
+        }
+
+        if (minNode != p)
+        {
+            infotypeInduk tempInfo = p->info;
+            p->info = minNode->info;
+            minNode->info = tempInfo;
+
+            addressAnak tempChild = p->child;
+            p->child = minNode->child;
+            minNode->child = tempChild;
+        }
+        p = p->next;
+    }
+    cout << "Sorting Negara selesai (Ascending)." << endl;
 }
-void sortingProvinsiDescending(addressInduk p) {
+void sortingProvinsiDescending(addressInduk p)
+{
     // 1. Validasi: Cek apakah negara ada atau provinsinya kosong
-    if (p == nullptr || p->child == nullptr) {
+    if (p == nullptr || p->child == nullptr)
+    {
         cout << "Negara tidak ada atau belum memiliki provinsi." << endl;
         return;
     }
 
     // Cek jika hanya ada 1 provinsi, tidak perlu sorting
-    if (p->child->next == nullptr) {
+    if (p->child->next == nullptr)
+    {
         return;
     }
 
@@ -470,18 +600,22 @@ void sortingProvinsiDescending(addressInduk p) {
     addressAnak pindah;
     ptr = p->child;
 
-    while (ptr != nullptr) {
+    while (ptr != nullptr)
+    {
         temp = ptr;
         pindah = ptr->next;
 
-        while (pindah != nullptr) {
-            if (pindah->info.populasiProvinsi > temp->info.populasiProvinsi) {
+        while (pindah != nullptr)
+        {
+            if (pindah->info.populasiProvinsi > temp->info.populasiProvinsi)
+            {
                 temp = pindah;
             }
             pindah = pindah->next;
         }
 
-        if (temp != ptr) {
+        if (temp != ptr)
+        {
             infotypeAnak dataSementara = ptr->info;
             ptr->info = temp->info;
             temp->info = dataSementara;
@@ -493,11 +627,11 @@ void sortingProvinsiDescending(addressInduk p) {
     cout << "Sorting Provinsi di negara " << p->info.namaNegara << " (Descending) selesai." << endl;
 }
 
-
-
-//Display
-void printDetailNegara(addressInduk p) {
-    if (p == nullptr) {
+// Display
+void printDetailNegara(addressInduk p)
+{
+    if (p == nullptr)
+    {
         cout << "\n[!] Data negara tidak ditemukan." << endl;
         return;
     }
@@ -515,8 +649,10 @@ void printDetailNegara(addressInduk p) {
     cout << "  Populasi   : " << p->info.totalPopulasi << " Jiwa" << endl;
     cout << "========================================" << endl;
 }
-void printDetailProvinsi(addressAnak p) {
-    if (p == nullptr) {
+void printDetailProvinsi(addressAnak p)
+{
+    if (p == nullptr)
+    {
         cout << "\n[!] Data provinsi tidak ditemukan atau kosong." << endl;
         return;
     }
@@ -533,22 +669,29 @@ void printDetailProvinsi(addressAnak p) {
     cout << "  Luas Wilayah  : " << p->info.luasWilayah << " km2" << endl;
     cout << "========================================" << endl;
 }
-void printAll(ListInduk l) {
-    if (isEmpty(l)) {
+void printAll(ListInduk l)
+{
+    if (isEmpty(l))
+    {
         cout << "Data Kosong (Tidak ada negara terdaftar)." << endl;
         return;
     }
 
     addressInduk p = l.first;
-    while (p != nullptr) {
+    while (p != nullptr)
+    {
         printDetailNegara(p);
         addressAnak q = p->child;
-        if (q == nullptr) {
+        if (q == nullptr)
+        {
             cout << "\t[!] Belum ada data provinsi di negara ini." << endl;
-        } else {
+        }
+        else
+        {
             cout << "\tDAFTAR PROVINSI:" << endl;
             int i = 1;
-            while (q != nullptr) {
+            while (q != nullptr)
+            {
                 cout << "\t" << i << ". " << q->info.namaProvinsi
                      << " (Pop: " << q->info.populasiProvinsi << ")" << endl;
                 q = q->next;
@@ -557,12 +700,12 @@ void printAll(ListInduk l) {
         }
         p = p->next; // Lanjut ke negara berikutnya
     }
-    cout << "\n========================================\n" << endl;
+    cout << "\n========================================\n"
+         << endl;
 }
 
-
-void showDashboard(ListInduk l) {
-
+void showDashboard(ListInduk l)
+{
     int totalNegara = countNegara(l);
 
     cout << "================================================================" << endl;
@@ -580,22 +723,24 @@ void showDashboard(ListInduk l) {
     cout << "  5.  Cari Data Negara (Detail)" << endl;
     cout << "  6.  Cari Data Provinsi (Detail)" << endl;
     cout << "  7.  Tampilkan Seluruh Data (View All)" << endl;
-    cout << "  8.  Update Otomatis Populasi Negara (Sum dari Provinsi)" << endl;
-    cout << "  9.  Tampilkan Negara Terpadat & Tersepi (Max/Min)" << endl;
-    cout << "  10. Tampilkan Provinsi Terpadat & Tersepi di suatu Negara" << endl;
-    cout << "  11. Sorting Negara (Ascending - Populasi)" << endl;
-    cout << "  12. Sorting Provinsi (Descending - Populasi)" << endl;
+    cout << "  8.  Tampilkan Negara Terpadat & Tersepi (Max/Min)" << endl;         // Geser naik
+    cout << "  9.  Tampilkan Provinsi Terpadat & Tersepi di suatu Negara" << endl; // Geser naik
+    cout << "  10. Sorting Negara (Ascending - Populasi)" << endl;                 // Geser naik
+    cout << "  11. Sorting Provinsi (Descending - Populasi)" << endl;              // Geser naik
+    cout << "  12. Laporan Total Data Global" << endl;                             // Geser naik
     cout << "----------------------------------------------------------------" << endl;
     cout << "  0.  KELUAR" << endl;
     cout << "================================================================" << endl;
     cout << "  Pilihan Anda [0-12] : ";
 }
-void printTotalData(ListInduk l) {
+void printTotalData(ListInduk l)
+{
     int jumNegara = countNegara(l);
     int jumProvinsi = 0;
 
     addressInduk p = l.first;
-    while(p != nullptr) {
+    while (p != nullptr)
+    {
         jumProvinsi += countProvinsi(p);
         p = p->next;
     }
