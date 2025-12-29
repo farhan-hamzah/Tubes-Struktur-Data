@@ -193,6 +193,11 @@ int main()
             // Total Data Global
             printTotalData(LI);
         }
+        else if (pilihan == 13)
+        {
+            hitungProvinsiTertentu(LI);
+        }
+
         else if (pilihan == 0)
         {
             cout << "Terima kasih." << endl;

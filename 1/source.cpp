@@ -704,6 +704,20 @@ void printAll(ListInduk l)
          << endl;
 }
 
+void hitungProvinsiTertentu(ListInduk l) {
+    string namaNegara;
+    cout << "Masukkan Nama Negara: ";
+    cin >> namaNegara; // Menggunakan cin >> (tanpa getline)
+
+    addressInduk p = searchNegara(l, namaNegara);
+    if (p != nullptr) {
+        int jumlah = countProvinsi(p); // Memanggil fungsi countProvinsi yang sudah ada
+        cout << "Jumlah provinsi di negara '" << namaNegara << "' adalah: " << jumlah << " provinsi." << endl;
+    } else {
+        cout << "[!] Negara '" << namaNegara << "' tidak ditemukan." << endl;
+    }
+}
+
 void showDashboard(ListInduk l)
 {
     int totalNegara = countNegara(l);
@@ -727,11 +741,12 @@ void showDashboard(ListInduk l)
     cout << "  9.  Tampilkan Provinsi Terpadat & Tersepi di suatu Negara" << endl; // Geser naik
     cout << "  10. Sorting Negara (Ascending - Populasi)" << endl;                 // Geser naik
     cout << "  11. Sorting Provinsi (Descending - Populasi)" << endl;              // Geser naik
-    cout << "  12. Laporan Total Data Global" << endl;                             // Geser naik
+    cout << "  12. Laporan Total Data Global" << endl;
+    cout << "  13. Hitung Jumlah Provinsi di Negara Tertentu" << endl;                     // Geser naik
     cout << "----------------------------------------------------------------" << endl;
     cout << "  0.  KELUAR" << endl;
     cout << "================================================================" << endl;
-    cout << "  Pilihan Anda [0-12] : ";
+    cout << "  Pilihan Anda [0-13] : ";
 }
 void printTotalData(ListInduk l)
 {

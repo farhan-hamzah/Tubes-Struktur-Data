@@ -102,6 +102,10 @@ void updateDataNegara(ListInduk &l, string namaNegara);
 void updateDataProvinsi(ListInduk &l, string namaNegara, string namaProvinsi);
 void printTotalData(ListInduk l); // Untuk fitur Total Album/Lagu versi kamu
 
+// HITUNG PROVINSI DI SUATU NEGARA
+void hitungProvinsiTertentu(ListInduk l);
+
+
 void showDashboard(ListInduk l);
 #endif // HEADER_H_INCLUDED
 

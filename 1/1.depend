@@ -10,3 +10,15 @@
 	<iostream>
 	<iomanip>
 
+1767049531 source:c:\users\rifki widya\tubes-struktur-data\1\main.cpp
+	<iostream>
+	"header.h"
+	<string>
+
+1767049404 c:\users\rifki widya\tubes-struktur-data\1\header.h
+	<iostream>
+	<iomanip>
+
+1767049479 source:c:\users\rifki widya\tubes-struktur-data\1\source.cpp
+	"header.h"
+
