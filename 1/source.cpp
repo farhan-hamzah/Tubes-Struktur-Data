@@ -282,10 +282,16 @@ void MaxMinProvinsi(ListInduk l, string negara)
         addressAnak maxP, minP;
         maxP = maxProvinsi(l, negara);
         minP = minProvinsi(l, negara);
-        cout << "Populasi paling banyak dari negara: " << negara << " adalah provinsi: " << maxP->info.namaProvinsi << " dengan detail provinsi";
-        printDetailProvinsi(maxP);
-        cout << "Populasi paling sedikit dari negara: " << negara << " adalah provinsi: " << minP->info.namaProvinsi << " dengan detail provinsi";
-        printDetailProvinsi(minP);
+
+        if (maxP != nullptr && minP != nullptr) {
+            cout << "Populasi terbanyak di " << negara << " adalah: " << maxP->info.namaProvinsi << endl;
+            printDetailProvinsi(maxP);
+
+            cout << "\nPopulasi tersedikit di " << negara << " adalah: " << minP->info.namaProvinsi << endl;
+            printDetailProvinsi(minP);
+        } else {
+             cout << "Negara " << negara << " belum memiliki data provinsi." << endl;
+        }
     }
     else
     {
@@ -588,7 +594,7 @@ void updateDataProvinsi(ListInduk &l, string namaNegara, string namaProvinsi) {
         cin >> temp;
         pProv->info.gubernur = temp;
 
-        cout << "Populasi Baru (JT) : "; // <-- UPDATE
+        cout << "Populasi Baru (dalam Juta) : ";
         cin >> tempInt;
         pProv->info.populasiProvinsi = tempInt;
 
@@ -701,7 +707,7 @@ void printDetailNegara(addressInduk p)
     cout << "  Mata Uang  : " << p->info.mataUang << endl;
     cout << "  Presiden   : " << p->info.presiden << endl;
     cout << "----------------------------------------" << endl;
-    cout << "  Populasi   : " << p->info.totalPopulasi << " (JT) Jiwa" << endl; // <-- UPDATE
+    cout << "  Populasi   : " << p->info.totalPopulasi << " (JT) Jiwa" << endl; // <-- EDIT DISINI
     cout << "========================================" << endl;
 }
 void printDetailProvinsi(addressAnak p)
@@ -720,7 +726,7 @@ void printDetailProvinsi(addressAnak p)
     cout << "  Ibu Kota      : " << p->info.ibuKotaProvinsi << endl;
     cout << "  Gubernur      : " << p->info.gubernur << endl;
     cout << "----------------------------------------" << endl;
-    cout << "  Populasi      : " << p->info.populasiProvinsi << " (JT) Jiwa" << endl; // <-- UPDATE
+    cout << "  Populasi      : " << p->info.populasiProvinsi << " (JT) Jiwa" << endl; // <-- EDIT DISINI
     cout << "  Luas Wilayah  : " << p->info.luasWilayah << " km2" << endl;
     cout << "========================================" << endl;
 }
@@ -748,7 +754,7 @@ void printAll(ListInduk l)
             while (q != nullptr)
             {
                 cout << "\t" << i << ". " << q->info.namaProvinsi
-                     << " (Pop: " << q->info.populasiProvinsi << " JT)" << endl; // <-- UPDATE
+                     << " (Pop: " << q->info.populasiProvinsi << " JT)" << endl; // <-- EDIT DISINI
                 q = q->next;
                 i++;
             }
@@ -783,13 +789,14 @@ void showDashboard(ListInduk l)
     cout << "  10. Sorting Negara (Ascending - Populasi)" << endl;
     cout << "  11. Sorting Provinsi (Descending - Populasi)" << endl;
     cout << "  12. Laporan Total Data Global" << endl;
-    cout << "  13. Update Data Negara (Edit)" << endl;
-    cout << "  14. Update Data Provinsi (Edit)" << endl;
+    cout << "  13. Update Data Negara (Edit)" << endl;    // Menu Baru
+    cout << "  14. Update Data Provinsi (Edit)" << endl;  // Menu Baru
     cout << "  15. Hitung Jumlah Provinsi di Suatu Negara" << endl;
+    cout << "  16. Hitung Jumlah Negara di MLL" << endl;
     cout << "----------------------------------------------------------------" << endl;
     cout << "  0.  KELUAR" << endl;
     cout << "================================================================" << endl;
-    cout << "  Pilihan Anda [0-14] : "; // Range input diupdate
+    cout << "  Pilihan Anda [0-16] : "; // Range input diupdate
 }
 void printTotalData(ListInduk l)
 {

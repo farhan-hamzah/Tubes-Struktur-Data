@@ -45,6 +45,7 @@ int main()
                 cout << "Presiden       : "; cin >> dataNegara.presiden;
                 cout << "Mata Uang      : "; cin >> dataNegara.mataUang;
 
+                // Populasi dihitung otomatis dari provinsi (set awal 0)
                 dataNegara.totalPopulasi = 0;
 
                 pNegara = alokasiNegara(dataNegara);
@@ -80,6 +81,7 @@ int main()
                     cout << "Ibu Kota Prov  : "; cin >> dataProvinsi.ibuKotaProvinsi;
                     cout << "Gubernur       : "; cin >> dataProvinsi.gubernur;
                     cout << "Luas Wilayah   : "; cin >> dataProvinsi.luasWilayah;
+                    // SUDAH DITAMBAHKAN (JT) DI SINI
                     cout << "Populasi (JT)  : "; cin >> dataProvinsi.populasiProvinsi;
 
                     pProvinsi = alokasiProvinsi(dataProvinsi);
@@ -184,14 +186,12 @@ int main()
                 cout << "[!] Negara tidak ditemukan." << endl;
             }
         }
-        else if (pilihan == 16) // FIX: MENU HITUNG NEGARA
+        else if (pilihan == 16)
         {
             int total = countNegara(LI);
             cout << "  TOTAL NEGARA TERDAFTAR" << endl;
             cout << "----------------------------------------" << endl;
             cout << "  Jumlah : " << total << " Negara" << endl;
-
-            // PENTING: Tambahkan ini agar hasil bisa dibaca sebelum menu muncul lagi
             cout << "\nTekan Enter untuk kembali...";
             cin.ignore();
             cin.get();
