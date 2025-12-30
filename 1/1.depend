@@ -1,12 +1,13 @@
 # depslib dependency file v1.0
-1765325119 source:c:\users\lenovo\onedrive\documents\tubesstd\1\main.cpp
+1767061667 source:c:\users\lenovo\onedrive\documents\tubesstd\1\main.cpp
 	<iostream>
 	"header.h"
+	<string>
 
-1765326575 source:c:\users\lenovo\onedrive\documents\tubesstd\1\source.cpp
+1767062397 source:c:\users\lenovo\onedrive\documents\tubesstd\1\source.cpp
 	"header.h"
 
-1765325297 c:\users\lenovo\onedrive\documents\tubesstd\1\header.h
+1766128450 c:\users\lenovo\onedrive\documents\tubesstd\1\header.h
 	<iostream>
 	<iomanip>
 

@@ -10,188 +10,191 @@ int main()
     ListInduk LI;
     createList(LI);
 
-    int pilihan = -1; // Inisialisasi awal bukan 0 agar loop jalan
+    int pilihan = -1;
     string s1, s2;
     infotypeInduk dataNegara;
     infotypeAnak dataProvinsi;
     addressInduk pNegara;
     addressAnak pProvinsi;
 
-    // 2. Loop Menggunakan While (Tanpa break/get di akhir)
+    // 2. Loop Menu
     while (pilihan != 0)
     {
-
         showDashboard(LI);
         cin >> pilihan;
-        cin.ignore(); // Membersihkan buffer enter
 
         cout << "\n----------------------------------------" << endl;
 
-        // MENGGUNAKAN IF-ELSE (Pengganti Switch-Case agar tidak pakai break)
-
         if (pilihan == 1)
         {
+            // --- TAMBAH NEGARA ---
             cout << "--- INPUT DATA NEGARA ---" << endl;
-            cout << "Nama Negara    : ";
-            getline(cin, s1);
+            cout << "Nama Negara (Tanpa Spasi) : ";
+            cin >> s1;
 
             if (searchNegara(LI, s1) != nullptr)
             {
-                cout << "[!] Gagal: Negara dengan nama '" << s1 << "' sudah terdaftar!" << endl;
+                cout << "[!] Gagal: Negara '" << s1 << "' sudah terdaftar!" << endl;
             }
             else
             {
                 dataNegara.namaNegara = s1;
-                cout << "Kode Negara    : ";
-                getline(cin, dataNegara.kodeNegara);
-                cout << "Benua          : ";
-                getline(cin, dataNegara.benua);
-                cout << "Ibu Kota       : ";
-                getline(cin, dataNegara.ibuKotaNegara);
-                cout << "Presiden       : ";
-                getline(cin, dataNegara.presiden);
-                cout << "Mata Uang      : ";
-                getline(cin, dataNegara.mataUang);
-                cout << "Total Populasi : ";
-                cin >> dataNegara.totalPopulasi;
+                cout << "Kode Negara    : "; cin >> dataNegara.kodeNegara;
+                cout << "Benua          : "; cin >> dataNegara.benua;
+                cout << "Ibu Kota       : "; cin >> dataNegara.ibuKotaNegara;
+                cout << "Presiden       : "; cin >> dataNegara.presiden;
+                cout << "Mata Uang      : "; cin >> dataNegara.mataUang;
 
-                dataNegara.totalPopulasi = 0; // Set awal 0
+                dataNegara.totalPopulasi = 0;
+
                 pNegara = alokasiNegara(dataNegara);
                 insertLastNegara(LI, pNegara);
 
-                // KONFIRMASI MANUAL TANPA PROSEDUR
-                cout << "\n[BERHASIL] Negara berhasil ditambahkan:" << endl;
-                printDetailNegara(pNegara);
-                cout << "\nTekan ENTER untuk lanjut...";
-                cin.ignore(); // Membersihkan buffer
-                getline(cin, s1);
+                cout << "\n[BERHASIL] Negara berhasil ditambahkan." << endl;
             }
         }
         else if (pilihan == 2)
         {
-            // Tambah Provinsi
+            // --- TAMBAH PROVINSI ---
             cout << "--- INPUT DATA PROVINSI ---" << endl;
-            cout << "Masukkan Nama Negara Tujuan: ";
-            getline(cin, s1);
+            cout << "Nama Negara Tujuan: ";
+            cin >> s1;
 
             pNegara = searchNegara(LI, s1);
             if (pNegara == nullptr)
             {
-                cout << "[!] Negara tidak ditemukan." << endl;
+                cout << "[!] Error: Negara tidak ditemukan." << endl;
             }
             else
             {
-                cout << "Nama Provinsi  : ";
-                getline(cin, s2);
+                cout << "Nama Provinsi (Tanpa Spasi) : ";
+                cin >> s2;
 
                 if (searchProvinsi(LI, s1, s2) != nullptr)
                 {
-                    cout << "[!] Gagal: Provinsi '" << s2 << "' sudah ada di negara " << s1 << "!" << endl;
+                    cout << "[!] Gagal: Provinsi '" << s2 << "' sudah ada!" << endl;
                 }
                 else
                 {
                     dataProvinsi.namaProvinsi = s2;
-                    cout << "Ibu Kota Prov  : ";
-                    getline(cin, dataProvinsi.ibuKotaProvinsi);
-                    cout << "Gubernur       : ";
-                    getline(cin, dataProvinsi.gubernur);
-                    cout << "Luas Wilayah   : ";
-                    cin >> dataProvinsi.luasWilayah;
-                    cout << "Populasi       : ";
-                    cin >> dataProvinsi.populasiProvinsi;
+                    cout << "Ibu Kota Prov  : "; cin >> dataProvinsi.ibuKotaProvinsi;
+                    cout << "Gubernur       : "; cin >> dataProvinsi.gubernur;
+                    cout << "Luas Wilayah   : "; cin >> dataProvinsi.luasWilayah;
+                    cout << "Populasi (JT)  : "; cin >> dataProvinsi.populasiProvinsi;
 
                     pProvinsi = alokasiProvinsi(dataProvinsi);
                     insertLastProvinsi(LI, s1, pProvinsi);
                     updatePopulasiOtomatis(LI);
-                    cout << "\n[UPDATE] Data Negara setelah provinsi ditambah:" << endl;
-                    pNegara = searchNegara(LI, s1);
-                    printDetailNegara(pNegara);
-                    cout << "\nTekan ENTER untuk lanjut...";
-                    cin.ignore();
-                    getline(cin, s1);
+
+                    cout << "\n[BERHASIL] Provinsi ditambahkan ke " << s1 << endl;
                 }
             }
         }
         else if (pilihan == 3)
         {
-            // Hapus Negara
             cout << "Nama Negara yang dihapus: ";
-            getline(cin, s1);
+            cin >> s1;
             hapusNegara(LI, s1);
         }
         else if (pilihan == 4)
         {
-            cout << "Dari Negara mana: ";
-            getline(cin, s1);
-            cout << "Nama Provinsi dihapus: ";
-            getline(cin, s2);
+            cout << "Dari Negara mana: "; cin >> s1;
+            cout << "Nama Provinsi dihapus: "; cin >> s2;
             hapusProvinsi(LI, s1, s2);
             updatePopulasiOtomatis(LI);
-            cout << "\n[UPDATE] Data Negara setelah provinsi dihapus:" << endl;
-            pNegara = searchNegara(LI, s1);
-            if (pNegara != nullptr)
-            {
-                printDetailNegara(pNegara);
-            }
-            cout << "\nTekan ENTER untuk lanjut...";
-            getline(cin, s1);
         }
         else if (pilihan == 5)
         {
-            // Cari Negara
             cout << "Cari Nama Negara: ";
-            getline(cin, s1);
+            cin >> s1;
             pNegara = searchNegara(LI, s1);
             printDetailNegara(pNegara);
         }
         else if (pilihan == 6)
         {
-            // Cari Provinsi
-            cout << "Cari di Negara: ";
-            getline(cin, s1);
-            cout << "Nama Provinsi : ";
-            getline(cin, s2);
+            cout << "Cari di Negara: "; cin >> s1;
+            cout << "Nama Provinsi : "; cin >> s2;
             pProvinsi = searchProvinsi(LI, s1, s2);
             printDetailProvinsi(pProvinsi);
         }
         else if (pilihan == 7)
         {
-            // View All
             printAll(LI);
         }
         else if (pilihan == 8)
         {
-            // Analisis Negara
             MaxMinNegara(LI);
         }
         else if (pilihan == 9)
         {
-            // Analisis Provinsi
             cout << "Masukkan Nama Negara: ";
-            getline(cin, s1);
-            MaxMinProvinsi(s1, LI); // Pastikan header sesuai (LI, s1) atau (s1, LI)
+            cin >> s1;
+            MaxMinProvinsi(LI, s1);
         }
         else if (pilihan == 10)
         {
-            // Sort Negara
             sortingNegaraAscending(LI);
-            cout << "\n[INFO] Data setelah diurutkan:" << endl;
+            cout << "[INFO] Negara telah diurutkan (Ascending)." << endl;
             printAll(LI);
-            cout << "\nTekan ENTER untuk lanjut...";
-            getline(cin, s1);
         }
         else if (pilihan == 11)
         {
-            // Sort Provinsi
             cout << "Masukkan Negara target sorting: ";
-            getline(cin, s1);
+            cin >> s1;
             pNegara = searchNegara(LI, s1);
-            sortingProvinsiDescending(pNegara);
+            if (pNegara != nullptr) {
+                sortingProvinsiDescending(pNegara);
+            } else {
+                cout << "[!] Negara tidak ditemukan." << endl;
+            }
         }
         else if (pilihan == 12)
         {
-            // Total Data Global
             printTotalData(LI);
+        }
+        else if (pilihan == 13)
+        {
+            cout << "Nama Negara yang ingin diubah: ";
+            cin >> s1;
+            updateDataNegara(LI, s1);
+        }
+        else if (pilihan == 14)
+        {
+            cout << "Nama Negara: "; cin >> s1;
+            cout << "Nama Provinsi yang ingin diubah: "; cin >> s2;
+            updateDataProvinsi(LI, s1, s2);
+        }
+        else if (pilihan == 15)
+        {
+            cout << "Masukkan Nama Negara: ";
+            cin >> s1;
+            pNegara = searchNegara(LI, s1);
+
+            if (pNegara != nullptr) {
+                int jumlahProv = countProvinsi(pNegara);
+                cout << "\n----------------------------------------" << endl;
+                cout << "  INFO STATISTIK: " << pNegara->info.namaNegara << endl;
+                cout << "----------------------------------------" << endl;
+                cout << "  Jumlah Provinsi : " << jumlahProv << " Provinsi" << endl;
+
+                if (jumlahProv == 0) {
+                    cout << "  (Negara ini belum memiliki data provinsi)" << endl;
+                }
+            } else {
+                cout << "[!] Negara tidak ditemukan." << endl;
+            }
+        }
+        else if (pilihan == 16) // FIX: MENU HITUNG NEGARA
+        {
+            int total = countNegara(LI);
+            cout << "  TOTAL NEGARA TERDAFTAR" << endl;
+            cout << "----------------------------------------" << endl;
+            cout << "  Jumlah : " << total << " Negara" << endl;
+
+            // PENTING: Tambahkan ini agar hasil bisa dibaca sebelum menu muncul lagi
+            cout << "\nTekan Enter untuk kembali...";
+            cin.ignore();
+            cin.get();
         }
         else if (pilihan == 0)
         {
@@ -202,7 +205,7 @@ int main()
             cout << "Pilihan tidak valid!" << endl;
         }
 
-        cout << "\n"; // Hanya enter kosong sebagai pemisah, tidak ada pause
+        cout << "\n"; // Pemisah antar menu
     }
 
     return 0;

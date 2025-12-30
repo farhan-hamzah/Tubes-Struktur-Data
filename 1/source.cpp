@@ -1,4 +1,5 @@
 #include "header.h"
+
 // Mengecek apakah List Kosong
 bool isEmpty(ListInduk l)
 {
@@ -261,10 +262,10 @@ void MaxMinNegara(ListInduk l)
     minN = minNegara(l);
     if (!isEmpty(l))
     {
-        cout << "Total populasi terbesar adalah negara: " << maxN->info.namaNegara << "Dengan detail negara";
+        cout << "Total populasi terbesar adalah negara: " << maxN->info.namaNegara << " Dengan detail negara";
         printDetailNegara(maxN);
         cout << endl;
-        cout << "Total populasi terkecil adalah negara: " << minN->info.namaNegara << "Dengan detail negara";
+        cout << "Total populasi terkecil adalah negara: " << minN->info.namaNegara << " Dengan detail negara";
         printDetailNegara(minN);
     }
     else
@@ -272,7 +273,7 @@ void MaxMinNegara(ListInduk l)
         cout << "List kosong";
     }
 }
-void MaxMinProvinsi(string negara, ListInduk l)
+void MaxMinProvinsi(ListInduk l, string negara)
 {
     addressInduk p;
     p = searchNegara(l, negara);
@@ -281,9 +282,9 @@ void MaxMinProvinsi(string negara, ListInduk l)
         addressAnak maxP, minP;
         maxP = maxProvinsi(l, negara);
         minP = minProvinsi(l, negara);
-        cout << "Populasi paling banyak dari negara: " << negara << "adalah provinsi: " << maxP->info.namaProvinsi << "dengan detail provinsi";
+        cout << "Populasi paling banyak dari negara: " << negara << " adalah provinsi: " << maxP->info.namaProvinsi << " dengan detail provinsi";
         printDetailProvinsi(maxP);
-        cout << "Populasi paling sedikit dari negara: " << negara << "adalah provinsi: " << minP->info.namaProvinsi << "dengan detail provinsi";
+        cout << "Populasi paling sedikit dari negara: " << negara << " adalah provinsi: " << minP->info.namaProvinsi << " dengan detail provinsi";
         printDetailProvinsi(minP);
     }
     else
@@ -541,6 +542,60 @@ void updatePopulasiOtomatis(ListInduk &l)
         p = p->next;
     }
 }
+void updateDataNegara(ListInduk &l, string namaNegara) {
+    addressInduk p = searchNegara(l, namaNegara);
+    string temp;
+
+    if (p == nullptr) {
+        cout << "[!] Error: Negara '" << namaNegara << "' tidak ditemukan." << endl;
+    } else {
+        cout << "\n--- UPDATE DATA NEGARA: " << p->info.namaNegara << " ---" << endl;
+
+        cout << "Masukkan Nama Negara Baru : ";
+        cin >> temp;
+        p->info.namaNegara = temp;
+
+        cout << "Masukkan Kode Negara Baru : ";
+        cin >> temp;
+        p->info.kodeNegara = temp;
+
+        cout << "Masukkan Nama Presiden    : ";
+        cin >> temp;
+        p->info.presiden = temp;
+
+        cout << "Masukkan Ibu Kota Baru    : ";
+        cin >> temp;
+        p->info.ibuKotaNegara = temp;
+
+        cout << "[+] Data Negara Berhasil Diperbarui!" << endl;
+    }
+}
+void updateDataProvinsi(ListInduk &l, string namaNegara, string namaProvinsi) {
+    addressAnak pProv = searchProvinsi(l, namaNegara, namaProvinsi);
+    string temp;
+    int tempInt;
+
+    if (pProv == nullptr) {
+        cout << "[!] Error: Provinsi tidak ditemukan." << endl;
+    } else {
+        cout << "\n--- UPDATE DATA PROVINSI: " << pProv->info.namaProvinsi << " ---" << endl;
+
+        cout << "Nama Provinsi Baru : ";
+        cin >> temp;
+        pProv->info.namaProvinsi = temp;
+
+        cout << "Nama Gubernur Baru : ";
+        cin >> temp;
+        pProv->info.gubernur = temp;
+
+        cout << "Populasi Baru (JT) : "; // <-- UPDATE
+        cin >> tempInt;
+        pProv->info.populasiProvinsi = tempInt;
+
+        cout << "[+] Data Provinsi Berhasil Diperbarui!" << endl;
+        updatePopulasiOtomatis(l);
+    }
+}
 
 // Sorting
 void sortingNegaraAscending(ListInduk &l)
@@ -646,7 +701,7 @@ void printDetailNegara(addressInduk p)
     cout << "  Mata Uang  : " << p->info.mataUang << endl;
     cout << "  Presiden   : " << p->info.presiden << endl;
     cout << "----------------------------------------" << endl;
-    cout << "  Populasi   : " << p->info.totalPopulasi << " Jiwa" << endl;
+    cout << "  Populasi   : " << p->info.totalPopulasi << " (JT) Jiwa" << endl; // <-- UPDATE
     cout << "========================================" << endl;
 }
 void printDetailProvinsi(addressAnak p)
@@ -665,7 +720,7 @@ void printDetailProvinsi(addressAnak p)
     cout << "  Ibu Kota      : " << p->info.ibuKotaProvinsi << endl;
     cout << "  Gubernur      : " << p->info.gubernur << endl;
     cout << "----------------------------------------" << endl;
-    cout << "  Populasi      : " << p->info.populasiProvinsi << " Jiwa" << endl;
+    cout << "  Populasi      : " << p->info.populasiProvinsi << " (JT) Jiwa" << endl; // <-- UPDATE
     cout << "  Luas Wilayah  : " << p->info.luasWilayah << " km2" << endl;
     cout << "========================================" << endl;
 }
@@ -693,7 +748,7 @@ void printAll(ListInduk l)
             while (q != nullptr)
             {
                 cout << "\t" << i << ". " << q->info.namaProvinsi
-                     << " (Pop: " << q->info.populasiProvinsi << ")" << endl;
+                     << " (Pop: " << q->info.populasiProvinsi << " JT)" << endl; // <-- UPDATE
                 q = q->next;
                 i++;
             }
@@ -723,15 +778,18 @@ void showDashboard(ListInduk l)
     cout << "  5.  Cari Data Negara (Detail)" << endl;
     cout << "  6.  Cari Data Provinsi (Detail)" << endl;
     cout << "  7.  Tampilkan Seluruh Data (View All)" << endl;
-    cout << "  8.  Tampilkan Negara Terpadat & Tersepi (Max/Min)" << endl;         // Geser naik
-    cout << "  9.  Tampilkan Provinsi Terpadat & Tersepi di suatu Negara" << endl; // Geser naik
-    cout << "  10. Sorting Negara (Ascending - Populasi)" << endl;                 // Geser naik
-    cout << "  11. Sorting Provinsi (Descending - Populasi)" << endl;              // Geser naik
-    cout << "  12. Laporan Total Data Global" << endl;                             // Geser naik
+    cout << "  8.  Tampilkan Negara Terpadat & Tersepi (Max/Min)" << endl;
+    cout << "  9.  Tampilkan Provinsi Terpadat & Tersepi di suatu Negara" << endl;
+    cout << "  10. Sorting Negara (Ascending - Populasi)" << endl;
+    cout << "  11. Sorting Provinsi (Descending - Populasi)" << endl;
+    cout << "  12. Laporan Total Data Global" << endl;
+    cout << "  13. Update Data Negara (Edit)" << endl;
+    cout << "  14. Update Data Provinsi (Edit)" << endl;
+    cout << "  15. Hitung Jumlah Provinsi di Suatu Negara" << endl;
     cout << "----------------------------------------------------------------" << endl;
     cout << "  0.  KELUAR" << endl;
     cout << "================================================================" << endl;
-    cout << "  Pilihan Anda [0-12] : ";
+    cout << "  Pilihan Anda [0-14] : "; // Range input diupdate
 }
 void printTotalData(ListInduk l)
 {

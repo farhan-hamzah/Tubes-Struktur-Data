@@ -77,7 +77,7 @@ addressInduk minNegara(ListInduk l);
 addressAnak minProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 addressAnak maxProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 void MaxMinNegara(ListInduk l);
-void MaxMinProvinsi(string negara, ListInduk l); // Tambah parameter ListInduk
+void MaxMinProvinsi(ListInduk l, string negara); // Tambah parameter ListInduk
 
 //Hitung banyak negara & Provinsi
 int countNegara(ListInduk l);
@@ -86,6 +86,8 @@ int countProvinsi(addressInduk p);
 
 //Update
 void updatePopulasiOtomatis(ListInduk &l);
+void updateDataNegara(ListInduk &l, string namaNegara);
+void updateDataProvinsi(ListInduk &l, string namaNegara, string namaProvinsi);
 
 //Sort
 void sortingNegaraAscending(ListInduk &l);
